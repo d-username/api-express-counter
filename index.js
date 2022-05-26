@@ -3,15 +3,17 @@ const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
 const counter = require("./counter/counter");
+const counterTwo = require("./counter/counterTwo");
 
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  console.log("got request!");
-  res.json("Hello!");
-});
+// GET /counter - Returns the current value of the counter. The counter should start of at 0.
+// POST /counter/increment- Increments the counter on the server and returns the current value.
+// POST /counter/decrement- Decrements a counter on the server and returns the current value.
+// POST /counter/double- Double the value of the counter on the server and returns the current value.
+// DELETE /counter - Resets the counter to 0 and returns the current value.
 
 app.get("/counter", (req, res) => {
   res.json(counter);
@@ -44,11 +46,37 @@ app.delete("/counter", (req, res) => {
   res.json(counter.value);
 });
 
+// Extension 1
+// PUT /counter - counter?value=20 should set the value of the counter to 20 - specified by a query string parameter. Use the req.query property in your callback to get the value provided.
+
+app.put("/counter", (req, res) => {
+  const operation = req.body.operation;
+  const newValue = Number(req.query.value);
+  if (operation === "setValuebyQueryString") {
+    counter.value = newValue;
+  }
+  res.json(counter.value);
+});
+
+// Extension 2
+// Using route parameters - Allow the client to specify the counter name as part of the URL.
+// POST / counter / cars / increment;
+// POST / counter / cars / decrement;
+// POST / counter / cars / double;
+// DELETE / counter / cars;
+// GET / counter / cars;
+
+app.post("/countertwo/increment", (req, res) => {
+  const incrementBy = req.body.incrementBy;
+  counterTwo.value += incrementBy;
+  res.json(counterTwo.value);
+});
+
+app.post("/countertwo/decrement", (req, res) => {
+  const decrementBy = req.body.decrementBy;
+  counterTwo.value -= decrementBy;
+  res.json(counterTwo.value);
+});
+
 const port = 3030;
 app.listen(port);
-
-// GET /counter - Returns the current value of the counter. The counter should start of at 0.
-// POST /counter/increment- Increments the counter on the server and returns the current value.
-// POST /counter/decrement- Decrements a counter on the server and returns the current value.
-// POST /counter/double- Double the value of the counter on the server and returns the current value.
-// DELETE /counter - Resets the counter to 0 and returns the current value.
