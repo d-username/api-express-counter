@@ -16,25 +16,25 @@ app.use(express.json());
 // DELETE /counter - Resets the counter to 0 and returns the current value.
 
 app.get("/counter", (req, res) => {
-  res.json(counter);
+  res.json({ counter });
 });
 
 app.post("/counter/increment", (req, res) => {
   const incrementBy = req.body.incrementBy;
   counter.value += incrementBy;
-  res.json(counter.value);
+  res.json({ counter });
 });
 
 app.post("/counter/decrement", (req, res) => {
   const decrementBy = req.body.decrementBy;
   counter.value -= decrementBy;
-  res.json(counter.value);
+  res.json({ counter });
 });
 
 app.post("/counter/double", (req, res) => {
   const multiplyBy = req.body.multiplyBy;
   counter.value *= multiplyBy;
-  res.json(counter.value);
+  res.json({ counter });
 });
 
 app.delete("/counter", (req, res) => {
@@ -43,7 +43,7 @@ app.delete("/counter", (req, res) => {
   if (operation === "reset") {
     counter.value = 0;
   }
-  res.json(counter.value);
+  res.json({ counter });
 });
 
 // Extension 1
@@ -55,7 +55,7 @@ app.put("/counter", (req, res) => {
   if (operation === "setValuebyQueryString") {
     counter.value = newValue;
   }
-  res.json(counter.value);
+  res.json({ counter });
 });
 
 // Extension 2
@@ -69,13 +69,13 @@ app.put("/counter", (req, res) => {
 app.post("/countertwo/increment", (req, res) => {
   const incrementBy = req.body.incrementBy;
   counterTwo.value += incrementBy;
-  res.json(counterTwo.value);
+  res.json({ counterTwo });
 });
 
 app.post("/countertwo/decrement", (req, res) => {
   const decrementBy = req.body.decrementBy;
   counterTwo.value -= decrementBy;
-  res.json(counterTwo.value);
+  res.json({ counterTwo });
 });
 
 const port = 3030;
